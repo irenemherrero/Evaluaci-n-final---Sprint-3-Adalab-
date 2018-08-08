@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import CharacterCard from './CharacterCard';
+import '../styles/CharacterList.css';
 
 class CharacterList extends Component {
     constructor(props) {
@@ -9,7 +10,7 @@ class CharacterList extends Component {
         }
     }
 
-    componentDidMount(){
+    componentDidMount() {
         fetch('http://hp-api.herokuapp.com/api/characters ')
             .then(response => {
                 return response.json();
@@ -18,26 +19,24 @@ class CharacterList extends Component {
                 console.log(json);
                 this.setState({ characterList: json })
             })
-        }
-    
+    }
+
     render() {
+        console.log(this.state.characterList);
+        const {characterList} = this.state;
         return (
             <ul className="CharacterList">
-                <CharacterCard />
-               {/*} {characterList.map(function (character) {
+                {characterList.map((character, index) => {
                     return (
-                <li key={pokemon.id}>
-                    <PokemonCard className="PokemonCard"
-                        evolution={pokemon.evolution}
-                        id={pokemon.id}
-                        name={pokemon.name} 
-                        image={pokemon.url} 
-                        types={pokemon.types}
-                        url={pokemon.url}
-                    />
-                </li>)
-            })
-                }*/}
+                        <li key={index} className="CharacterCard">
+                            <CharacterCard 
+                                photo={character.image}
+                                name={character.name}
+                                house={character.house}
+                            />
+                        </li>)
+                })
+                }
             </ul>
         );
     }
