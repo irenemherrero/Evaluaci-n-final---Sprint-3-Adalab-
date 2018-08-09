@@ -5,12 +5,67 @@ import CharacterCard from './CharacterCard.js';
 import '../styles/App.css';
 
 class App extends Component {
-  render() {
-    return (
-      <section>
-      <CharacterList/>
-      <CharacterCard/>
-    {/*<Switch>
+  constructor(props) {
+    super(props);
+    this.state = {
+      characterList: [],
+      filteredList: [],
+      value: '',
+    }
+    this.handleLetterChange = this.handleLetterChange.bind(this)
+    this.filterResults=this.filterResults.bind(this)
+    // this.filterByLetters=this.filterByLetters.bind(this)
+  }
+
+  componentDidMount() {
+    fetch('http://hp-api.herokuapp.com/api/characters')
+      .then(response => {
+        return response.json();
+      })
+      .then((json) => {
+        console.log(json);
+        this.setState({
+          characterList: json,
+          filteredList: json,
+        })
+      })
+  }
+
+
+filterResults(){
+  const { characterList, value, filteredList } = this.state;
+  return !value
+    ? characterList
+    : filteredList
+}
+
+handleLetterChange(event){
+  this.setState(
+    {
+      value: event.currentTarget.value
+    },
+    () => {
+      const arrayFiltered = this.state.characterList.filter((character) =>
+        character.name.includes(this.state.value));
+      console.log('che', arrayFiltered);
+      this.setState({ filteredList: arrayFiltered })
+    }
+  );
+}
+
+
+render() {
+  console.log(this.state.value);
+  return (
+    <section>
+      <CharacterList
+        characterListToPrint={this.filterResults}
+        handleLetterChange={this.handleLetterChange}
+        valueInput={this.state.value}
+      />
+      <CharacterCard />
+
+      {/*<Switch>
       <Route
         exact path='/'
         render={ props => 
@@ -31,8 +86,8 @@ class App extends Component {
       /> 
       </Switch>*/}
     </section>
-    );
-  }
+  );
+}
 }
 
 export default App;
