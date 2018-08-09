@@ -4,31 +4,19 @@ import Filters from './Filters';
 import '../styles/CharacterList.css';
 
 class CharacterList extends Component {
-    constructor(props){
-        super(props)
-
-        this.getCorrectList=this.getCorrectList.bind(this)
-    }
-
-    getCorrectList() {
-        const { characterList, filteredList } = this.props;
-        // console.log(this.props.filteredList);
-        return !filteredList
-          ? characterList
-          : filteredList;
-      }
 
     render() {
-        // console.log(this.props.characterList);
-        const { handleLetterChange, valueInput } = this.props;
-        return (
-            <Fragment>
+        console.log(this.props);
+        const { handleLetterChange, valueInput, characterListToPrint } = this.props;
+        console.log('LISTA', characterListToPrint);
+        return(
+        <Fragment>
                 <h1>Harry Potter Characters</h1>
                 <Filters 
                 handleLetterChange={handleLetterChange}
                 valueInput={valueInput}/>
                 <ul className="CharacterList">
-                {this.getCorrectList().map((character, index) => {
+                {characterListToPrint().map((character, index) => {
                     return (
                         <li key={index} className="CharacterCard">
                             <CharacterCard
@@ -40,8 +28,7 @@ class CharacterList extends Component {
                 })
                 }
             </ul>
-            </Fragment>
-        );
+            </Fragment>)
     }
 }
 

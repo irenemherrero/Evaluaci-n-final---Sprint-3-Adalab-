@@ -8,68 +8,64 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        characterList: [],
-        filteredList: [],
-        value: '',
+      characterList: [],
+      filteredList: [],
+      value: '',
     }
-    this.handleLetterChange=this.handleLetterChange.bind(this)
-    // this.filterResults=this.filterResults.bind(this)
-    this.filterByLetters=this.filterByLetters.bind(this)
-}
+    this.handleLetterChange = this.handleLetterChange.bind(this)
+    this.filterResults=this.filterResults.bind(this)
+    // this.filterByLetters=this.filterByLetters.bind(this)
+  }
 
-componentDidMount() {
+  componentDidMount() {
     fetch('http://hp-api.herokuapp.com/api/characters')
-        .then(response => {
-            return response.json();
+      .then(response => {
+        return response.json();
+      })
+      .then((json) => {
+        console.log(json);
+        this.setState({
+          characterList: json,
+          filteredList: json,
         })
-        .then((json) => {
-            console.log(json);
-            this.setState({ 
-              characterList: json,
-              filteredList: json,
-             })
-        })
+      })
+  }
+
+
+filterResults(){
+  const { characterList, value, filteredList } = this.state;
+  return !value
+    ? characterList
+    : filteredList
 }
-
-filterByLetters() {
-  console.log('holi')
-  const arrayFiltered = this.state.characterList.filter((character) => 
-  character.name.includes(this.state.value));
-  console.log('che', arrayFiltered);
-  this.setState({filteredList: arrayFiltered})
-
-
-}
-
-// filterResults(){
-//   const { characterList, value } = this.state;
-
-//   return !value
-//     ? characterList
-//     : this.filterByLetters();
-// }
 
 handleLetterChange(event){
-  this.setState({
-    value: event.currentTarget.value,
-  },() => {
-    console.log(this.state.value);});
-this.filterByLetters();
+  this.setState(
+    {
+      value: event.currentTarget.value
+    },
+    () => {
+      const arrayFiltered = this.state.characterList.filter((character) =>
+        character.name.includes(this.state.value));
+      console.log('che', arrayFiltered);
+      this.setState({ filteredList: arrayFiltered })
+    }
+  );
 }
 
-  render() {
-    console.log(this.state.value);
-    return (
-      <section>
-      <CharacterList 
-        characterList={this.state.characterList}
-        filteredList={this.state.filteredList}
+
+render() {
+  console.log(this.state.value);
+  return (
+    <section>
+      <CharacterList
+        characterListToPrint={this.filterResults}
         handleLetterChange={this.handleLetterChange}
         valueInput={this.state.value}
       />
-      <CharacterCard/>
-      
-    {/*<Switch>
+      <CharacterCard />
+
+      {/*<Switch>
       <Route
         exact path='/'
         render={ props => 
@@ -90,8 +86,8 @@ this.filterByLetters();
       /> 
       </Switch>*/}
     </section>
-    );
-  }
+  );
+}
 }
 
 export default App;
