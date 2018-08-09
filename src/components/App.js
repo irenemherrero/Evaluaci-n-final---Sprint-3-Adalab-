@@ -13,8 +13,7 @@ class App extends Component {
       value: '',
     }
     this.handleLetterChange = this.handleLetterChange.bind(this)
-    this.filterResults=this.filterResults.bind(this)
-    // this.filterByLetters=this.filterByLetters.bind(this)
+    this.filterResults = this.filterResults.bind(this)
   }
 
   componentDidMount() {
@@ -23,49 +22,56 @@ class App extends Component {
         return response.json();
       })
       .then((json) => {
-        console.log(json);
+        const characterList = [];
+
+        for(let i=0; i<json.length; i++){
+          characterList[i]= {
+            ...json[i],
+            id:i
+          }
+        }
         this.setState({
-          characterList: json,
-          filteredList: json,
+          characterList: characterList,
+          filteredList: characterList,
         })
-      })
+        console.log(this.state.characterList);
+          })
+  }
+
+  filterResults() {
+    const { characterList, value, filteredList } = this.state;
+    return !value
+      ? characterList
+      : filteredList
+  }
+
+  handleLetterChange(event) {
+    this.setState(
+      {
+        value: event.currentTarget.value
+      },
+      () => {
+        const arrayFiltered = this.state.characterList.filter((character) =>
+          character.name.includes(this.state.value));
+        console.log('che', arrayFiltered);
+        this.setState({ filteredList: arrayFiltered })
+      }
+    );
   }
 
 
-filterResults(){
-  const { characterList, value, filteredList } = this.state;
-  return !value
-    ? characterList
-    : filteredList
-}
+  render() {
+    console.log(this.state.value);
+    return (
+      <section>
+        <CharacterList
+          characterListToPrint={this.filterResults}
+          handleLetterChange={this.handleLetterChange}
+          valueInput={this.state.value}
+        />
+        <CharacterCard />
 
-handleLetterChange(event){
-  this.setState(
-    {
-      value: event.currentTarget.value
-    },
-    () => {
-      const arrayFiltered = this.state.characterList.filter((character) =>
-        character.name.includes(this.state.value));
-      console.log('che', arrayFiltered);
-      this.setState({ filteredList: arrayFiltered })
-    }
-  );
-}
-
-
-render() {
-  console.log(this.state.value);
-  return (
-    <section>
-      <CharacterList
-        characterListToPrint={this.filterResults}
-        handleLetterChange={this.handleLetterChange}
-        valueInput={this.state.value}
-      />
-      <CharacterCard />
-
-      {/*<Switch>
+        {/*<Switch>
       <Route
         exact path='/'
         render={ props => 
@@ -78,16 +84,16 @@ render() {
       <Route 
         path='/z' 
         render={ props => 
-          <CharacterCard 
+          <Detail 
             // match={props.match} 
             // peopleList= {peopleList}
             />
         }
       /> 
       </Switch>*/}
-    </section>
-  );
-}
+      </section>
+    );
+  }
 }
 
 export default App;
