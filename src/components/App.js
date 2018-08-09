@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import CharacterList from './CharacterList';
-import CharacterCard from './CharacterCard';
 import Detail from './Detail';
 import '../styles/App.css';
 
@@ -15,29 +14,40 @@ class App extends Component {
     }
     this.handleLetterChange = this.handleLetterChange.bind(this)
     this.filterResults = this.filterResults.bind(this)
+    // this.filterCharacters = this.filterCharacters.bind(this)
   }
+
+  // Llamo a la api para recibir los datos
 
   componentDidMount() {
     fetch('http://hp-api.herokuapp.com/api/characters')
       .then(response => {
         return response.json();
       })
-      .then((json) => {
-        const characterList = [];
 
-        for(let i=0; i<json.length; i++){
-          characterList[i]= {
+      //Pongo un ID a los datos que me llegan en JSON 
+
+      .then((json) => {
+        console.log(json)
+        const characterListWithId = [];
+
+        for (let i = 0; i < json.length; i++) {
+          characterListWithId[i] = {
             ...json[i],
-            id:i
+            id: i
           }
         }
+
+        //Guardo el array con los id en el estado (modificando el vacío)
+
         this.setState({
-          characterList: characterList,
-          filteredList: characterList,
+          characterList: characterListWithId,
+          filteredList: characterListWithId,
         })
-        console.log(this.state.characterList);
-          })
+      })
   }
+
+  // Selecciono el array que voy a enviar a CharacterList para que lo imprima
 
   filterResults() {
     const { characterList, value, filteredList } = this.state;
@@ -46,44 +56,53 @@ class App extends Component {
       : filteredList
   }
 
+  //Pongo el valor del value en el estado de la madre. 
+  //En el callback filtro el array completo de personajes para que me devuelva solo aquellos cuyo nombre incluya las letras que ha escrito el usuario, es decir, las del value.
+
   handleLetterChange(event) {
     this.setState(
       {
         value: event.currentTarget.value
-      },
-      () => {
+      }, () => {
         const arrayFiltered = this.state.characterList.filter((character) =>
-          character.name.includes(this.state.value));
-        console.log('che', arrayFiltered);
+          character.name.toUpperCase().includes(this.state.value.toUpperCase()));
         this.setState({ filteredList: arrayFiltered })
       }
     );
   }
 
+  //DUDA: ¿Por qué si en el callback en lugar de una arrowfunction pongo una llamada a una función externa va con retraso la escritura?
+
+          // filterCharacters(){
+          //     const arrayFiltered = this.state.characterList.filter((character) =>
+          //       character.name.toUpperCase().includes(this.state.value.toUpperCase()));
+          //     console.log('che', arrayFiltered);
+          //     this.setState({ filteredList: arrayFiltered })
+          //   }
 
   render() {
     console.log(this.state.value);
     return (
       <Switch>
-      <Route
-        exact path='/'
-        render={ () => 
-          <CharacterList
-          characterListToPrint={this.filterResults}
-          handleLetterChange={this.handleLetterChange}
-          valueInput={this.state.value}
-          />
-        }
-      />
-     <Route 
-        path='/character/:id'
-        render={ props => 
-          <Detail 
-            match={props.match} 
-            characterList={this.state.characterList}
+        <Route
+          exact path='/'
+          render={() =>
+            <CharacterList
+              characterListToPrint={this.filterResults}
+              handleLetterChange={this.handleLetterChange}
+              valueInput={this.state.value}
             />
-        }
-      /> 
+          }
+        />
+        <Route
+          path='/character/:id'
+          render={props =>
+            <Detail
+              match={props.match}
+              characterList={this.state.characterList}
+            />
+          }
+        />
       </Switch>
     );
   }

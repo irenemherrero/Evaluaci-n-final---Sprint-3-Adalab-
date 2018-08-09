@@ -1,15 +1,12 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import '../styles/Filters.css';
+
 class Filters extends Component {
-    constructor(props) {
-        super(props);
-    }
-    
     render() { 
         console.log(this.props.valueInput);
-        const {valueInput} = this.props;
+        const {valueInput, handleLetterChange} = this.props;
         return ( 
-            <input value={valueInput} placeholder="Ej. Harry Potter" onChange={this.props.handleLetterChange}/> 
+            <input value={valueInput} placeholder="Ej. Harry Potter" onChange={handleLetterChange}/> 
 
          );
     }
