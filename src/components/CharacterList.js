@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import CharacterCard from './CharacterCard';
 import Filters from './Filters';
+import { Link } from 'react-router-dom';
 import '../styles/CharacterList.css';
 
 class CharacterList extends Component {
@@ -19,11 +20,13 @@ class CharacterList extends Component {
                 {characterListToPrint().map((character, index) => {
                     return (
                         <li key={index} className="CharacterCard">
+                        <Link to={`/character/${character.id}`}>
                             <CharacterCard
                                 photo={character.image}
                                 name={character.name}
                                 house={character.house}
                             />
+                        </Link>
                         </li>)
                 })
                 }

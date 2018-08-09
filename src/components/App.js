@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
-import CharacterList from './CharacterList.js';
-import CharacterCard from './CharacterCard.js';
+import CharacterList from './CharacterList';
+import CharacterCard from './CharacterCard';
+import Detail from './Detail';
 import '../styles/App.css';
 
 class App extends Component {
@@ -63,35 +64,27 @@ class App extends Component {
   render() {
     console.log(this.state.value);
     return (
-      <section>
-        <CharacterList
+      <Switch>
+      <Route
+        exact path='/'
+        render={ () => 
+          <CharacterList
           characterListToPrint={this.filterResults}
           handleLetterChange={this.handleLetterChange}
           valueInput={this.state.value}
-        />
-        <CharacterCard />
-
-        {/*<Switch>
-      <Route
-        exact path='/'
-        render={ props => 
-          <CharacterList
-            // match={props.match}
-            // peopleList={peopleList}
           />
         }
       />
-      <Route 
-        path='/z' 
+     <Route 
+        path='/character/:id'
         render={ props => 
           <Detail 
-            // match={props.match} 
-            // peopleList= {peopleList}
+            match={props.match} 
+            characterList={this.state.characterList}
             />
         }
       /> 
-      </Switch>*/}
-      </section>
+      </Switch>
     );
   }
 }

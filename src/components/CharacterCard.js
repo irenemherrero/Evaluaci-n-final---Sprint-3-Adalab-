@@ -4,7 +4,6 @@ import '../styles/CharacterCard.css';
 class CharacterCard extends Component {
 
     render() { 
-        console.log(this.props);
         const {house, name, photo}=this.props;
         return ( 
             <Fragment>
