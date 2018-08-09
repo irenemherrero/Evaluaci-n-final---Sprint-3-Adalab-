@@ -8,7 +8,7 @@ class Filters extends Component {
         const { valueInput, handleLetterChange } = this.props;
         return (
             <div className="BoxInput">
-                <input
+                <input className="Input"
                     value={valueInput}
                     placeholder="Ej. Harry Potter"
                     onChange={handleLetterChange}

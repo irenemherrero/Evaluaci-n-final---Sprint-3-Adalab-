@@ -25,7 +25,7 @@ class CharacterList extends Component {
                                 <CharacterCard
                                     photo={character.image}
                                     name={character.name}
-                                    house={character.house}
+                                    house={character.house || "Sin casa"}
                                 />
                             </li>
                             </Link>)
