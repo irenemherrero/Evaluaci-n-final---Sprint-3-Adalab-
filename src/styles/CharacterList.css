@@ -2,11 +2,8 @@
   display: flex;
   flex-wrap: wrap; }
 
-.CharacterCard {
-  border: solid 1px black;
-  width: 220px;
-  height: 280px;
-  margin: 5px;
-  padding: 5px;
-  background-color: black;
-  color: white; }
+.LinkCard {
+  text-decoration: none; }
+
+.WebTitle {
+  text-align: center; }

@@ -14,7 +14,7 @@ class App extends Component {
     }
     this.handleLetterChange = this.handleLetterChange.bind(this)
     this.filterResults = this.filterResults.bind(this)
-    // this.filterCharacters = this.filterCharacters.bind(this)
+    this.filterCharacters = this.filterCharacters.bind(this)
   }
 
   // Llamo a la api para recibir los datos
@@ -63,22 +63,16 @@ class App extends Component {
     this.setState(
       {
         value: event.currentTarget.value
-      }, () => {
-        const arrayFiltered = this.state.characterList.filter((character) =>
-          character.name.toUpperCase().includes(this.state.value.toUpperCase()));
-        this.setState({ filteredList: arrayFiltered })
-      }
+      }, this.filterCharacters
     );
   }
 
-  //DUDA: ¿Por qué si en el callback en lugar de una arrowfunction pongo una llamada a una función externa va con retraso la escritura?
-
-          // filterCharacters(){
-          //     const arrayFiltered = this.state.characterList.filter((character) =>
-          //       character.name.toUpperCase().includes(this.state.value.toUpperCase()));
-          //     console.log('che', arrayFiltered);
-          //     this.setState({ filteredList: arrayFiltered })
-          //   }
+  filterCharacters() {
+    const arrayFiltered = this.state.characterList.filter((character) =>
+      character.name.toUpperCase().includes(this.state.value.toUpperCase()));
+    console.log('che', arrayFiltered);
+    this.setState({ filteredList: arrayFiltered })
+  }
 
   render() {
     console.log(this.state.value);
