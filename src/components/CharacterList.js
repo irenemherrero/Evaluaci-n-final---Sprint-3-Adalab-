@@ -1,35 +1,37 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import CharacterCard from './CharacterCard';
+import Filters from './Filters';
 import '../styles/CharacterList.css';
 
 class CharacterList extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            characterList: []
-        }
+    constructor(props){
+        super(props)
+
+        this.getCorrectList=this.getCorrectList.bind(this)
     }
 
-    componentDidMount() {
-        fetch('http://hp-api.herokuapp.com/api/characters ')
-            .then(response => {
-                return response.json();
-            })
-            .then((json) => {
-                console.log(json);
-                this.setState({ characterList: json })
-            })
-    }
+    getCorrectList() {
+        const { characterList, filteredList } = this.props;
+        // console.log(this.props.filteredList);
+        return !filteredList
+          ? characterList
+          : filteredList;
+      }
 
     render() {
-        console.log(this.state.characterList);
-        const {characterList} = this.state;
+        // console.log(this.props.characterList);
+        const { handleLetterChange, valueInput } = this.props;
         return (
-            <ul className="CharacterList">
-                {characterList.map((character, index) => {
+            <Fragment>
+                <h1>Harry Potter Characters</h1>
+                <Filters 
+                handleLetterChange={handleLetterChange}
+                valueInput={valueInput}/>
+                <ul className="CharacterList">
+                {this.getCorrectList().map((character, index) => {
                     return (
                         <li key={index} className="CharacterCard">
-                            <CharacterCard 
+                            <CharacterCard
                                 photo={character.image}
                                 name={character.name}
                                 house={character.house}
@@ -38,6 +40,7 @@ class CharacterList extends Component {
                 })
                 }
             </ul>
+            </Fragment>
         );
     }
 }
