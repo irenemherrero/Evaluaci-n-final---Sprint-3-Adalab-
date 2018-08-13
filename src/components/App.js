@@ -11,10 +11,13 @@ class App extends Component {
       characterList: [],
       filteredList: [],
       value: '',
+      valueSelect:"",
     }
     this.handleLetterChange = this.handleLetterChange.bind(this)
     this.filterResults = this.filterResults.bind(this)
     this.filterCharacters = this.filterCharacters.bind(this)
+    this.handleSelect=this.handleSelect.bind(this)
+    this.filterByLife=this.filterByLife.bind(this)
   }
 
   // Llamo a la api para recibir los datos
@@ -50,8 +53,8 @@ class App extends Component {
   // Selecciono el array que voy a enviar a CharacterList para que lo imprima
 
   filterResults() {
-    const { characterList, value, filteredList } = this.state;
-    return !value
+    const { characterList, value, filteredList, valueSelect } = this.state;
+    return !value && !valueSelect
       ? characterList
       : filteredList
   }
@@ -59,12 +62,35 @@ class App extends Component {
   //Pongo el valor del value en el estado de la madre. 
   //En el callback filtro el array completo de personajes para que me devuelva solo aquellos cuyo nombre incluya las letras que ha escrito el usuario, es decir, las del value.
 
+  handleSelect(event){
+    this.setState(
+      {
+        valueSelect: event.currentTarget.value
+      }, this.filterByLife
+    );
+  }
   handleLetterChange(event) {
     this.setState(
       {
         value: event.currentTarget.value
       }, this.filterCharacters
     );
+  }
+
+  filterByLife() {
+    console.log('AQUÏ', this.state.characterList);
+    const arrayLife = this.state.characterList.filter((character) => {
+      if(character.alive === true && this.state.valueSelect === "Vivo"){
+        return true;
+      } else if (character.alive === false && this.state.valueSelect === "Muerto") {
+        return true;
+      } else if (this.state.valueSelect === "Todos"){ 
+        return true;
+      } else {
+        return false;
+      }
+    })
+    this.setState({filteredList: arrayLife})
   }
 
   filterCharacters() {
@@ -85,6 +111,7 @@ class App extends Component {
               characterListToPrint={this.filterResults}
               handleLetterChange={this.handleLetterChange}
               valueInput={this.state.value}
+              handleSelect={this.handleSelect}
             />
           }
         />

@@ -9,14 +9,15 @@ class CharacterList extends Component {
 
     render() {
         console.log(this.props);
-        const { handleLetterChange, valueInput, characterListToPrint } = this.props;
+        const { handleLetterChange, valueInput, characterListToPrint, handleSelect } = this.props;
         console.log('LISTA', characterListToPrint);
         return (
             <Fragment>
                 <h1 className="WebTitle">Harry Potter Characters</h1>
                 <Filters
                     handleLetterChange={handleLetterChange}
-                    valueInput={valueInput} />
+                    valueInput={valueInput}
+                    handleSelect={handleSelect} />
                 <ul className="CharacterList">
                     {characterListToPrint().map((character, index) => {
                         return (
