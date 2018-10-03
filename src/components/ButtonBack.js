@@ -6,7 +6,9 @@ class ButtonBack extends Component {
   render() {
     return (
       <Link to="/">
-        <button className="ButtonBack">¡Vuelve atrás con tu Ninbus!</button>
+        <button className="ButtonBack" >
+          <p className="magicParagraph">¡Vuelve atrás con tu Ninbus!</p>
+        </button>
       </Link>
     );
   }

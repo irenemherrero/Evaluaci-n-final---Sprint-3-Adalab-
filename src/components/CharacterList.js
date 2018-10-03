@@ -13,26 +13,32 @@ class CharacterList extends Component {
         console.log('LISTA', characterListToPrint);
         return (
             <Fragment>
-                <h1 className="WebTitle">Harry Potter Characters</h1>
-                <Filters
-                    handleLetterChange={handleLetterChange}
-                    valueInput={valueInput}
-                    handleSelect={handleSelect} />
-                <ul className="CharacterList">
-                    {characterListToPrint().map((character, index) => {
-                        return (
-                            <Link className="LinkCard" to={`/character/${character.id}`}><li key={index} className="CharacterCard">
+                <div class="stars"></div>
+                <div class="twinkling"></div>
+                <div class="clouds"></div>
+                <div className="contentWeb">
+                    <h1 className="WebTitle">Harry Potter Characters</h1>
+                    <Filters
+                        handleLetterChange={handleLetterChange}
+                        valueInput={valueInput}
+                        handleSelect={handleSelect} />
+                    <ul className="CharacterList">
+                        {characterListToPrint().map((character, index) => {
+                            return (
+                                <Link className="LinkCard" to={`/character/${character.id}`}><li key={index} className="CharacterCard">
 
-                                <CharacterCard
-                                    photo={character.image}
-                                    name={character.name}
-                                    house={character.house || "Sin casa"}
-                                />
-                            </li>
-                            </Link>)
-                    })
-                    }
-                </ul>
+                                    <CharacterCard
+                                        photo={character.image}
+                                        name={character.name}
+                                        house={character.house || "Sin casa"}
+                                    />
+                                </li>
+                                </Link>)
+                        })
+                        }
+                    </ul>
+                </div>
+
             </Fragment>)
     }
 }

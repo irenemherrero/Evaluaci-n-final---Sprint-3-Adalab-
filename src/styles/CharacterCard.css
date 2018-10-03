@@ -1,6 +1,5 @@
 .CharacterCard {
   width: 150px;
-  height: 280px;
   background-color: lightblue;
   display: flex;
   margin: 10px;
@@ -11,13 +10,22 @@
   padding: 5px; }
 
 .DataCharacterBox {
-  background-color: orange;
+  background-image: linear-gradient(to bottom right, white, gold);
+  border-radius: 5px;
   width: 100%;
-  text-align: center; }
+  text-align: center;
+  color: black;
+  font-family: 'Charmonman', cursive; }
+
+.magicParagraph {
+  margin: 6px;
+  font-family: 'Charmonman', cursive;
+  font-size: 12px; }
 
 .ImageCharacter {
   width: 100%;
-  height: 190px; }
+  height: 190px;
+  border-radius: 5px; }
 
 .PhotoContainer {
   width: 100%; }

@@ -19,27 +19,32 @@ class Detail extends Component {
       alive
     } = characterToPrint;
     return (
-      <div className="MaximumContainer">
-        <div className="Container">
-          <div className="ImageBox">
-            <img className="ImageDetail" src={image} alt={name} />
-          </div>
-          <div className="TextBox">
-            <h1 className="CharacterName"> {name || "Sin nombre"}</h1>
-            <h2 className="CharacterData">Casa: {house || "Sin hogar"}</h2>
-            <h2 className="CharacterData">
-              Nacimiento: {yearOfBirth || "Desconocido"}
-            </h2>
-            <h2 className="CharacterData">
-              Patronus: {patronus || "Desconocido"}
-            </h2>
-            <h2 className="CharacterData">
-              Estado: {alive ? "Vivo" : "Muerto" || "Desconocido"}
-            </h2>
-            <ButtonBack />
+      <Fragment>
+        <div class="stars"></div>
+        <div class="twinkling"></div>
+        <div class="clouds"></div>
+        <div className="MaximumContainer">
+          <div className="Container">
+            <div className="ImageBox">
+              <img className="ImageDetail" src={image} alt={name} />
+            </div>
+            <div className="TextBox">
+              <h1 className="CharacterName"> {name || "Sin nombre"}</h1>
+              <h2 className="CharacterData">Casa: {house || "Sin hogar"}</h2>
+              <h2 className="CharacterData">
+                Nacimiento: {yearOfBirth || "Desconocido"}
+              </h2>
+              <h2 className="CharacterData">
+                Patronus: {patronus || "Desconocido"}
+              </h2>
+              <h2 className="CharacterData">
+                Estado: {alive ? "Vivo" : "Muerto" || "Desconocido"}
+              </h2>
+              <ButtonBack />
+            </div>
           </div>
         </div>
-      </div>
+      </Fragment>
     );
   }
 }

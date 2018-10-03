@@ -14,11 +14,11 @@ class Filters extends Component {
                     onChange={handleLetterChange}
                 />
 
-                <select name="" id="" onChange={handleSelect}>
+                {/*<select name="" id="" onChange={handleSelect}>
                     <option value="Vivo">Vivo</option>
                     <option value="Muerto">Muerto</option>
                     <option value="Todos">Todos</option>
-                </select>
+                </select>*/}
             </div>
         );
     }

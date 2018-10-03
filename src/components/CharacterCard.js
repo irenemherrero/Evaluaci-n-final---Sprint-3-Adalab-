@@ -13,8 +13,8 @@ class CharacterCard extends Component {
                     <img className="ImageCharacter" src={photo} alt={name} />
                 </div>
                 <div className="DataCharacterBox">
-                    <p>{name}</p>
-                    <p>{house}</p>
+                    <p className="magicParagraph">{name}</p>
+                    <p className="magicParagraph">{house}</p>
                 </div>
             </Fragment>
         );
