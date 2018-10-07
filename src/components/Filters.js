@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 
 class Filters extends Component {
     render() {
-        console.log(this.props);
         const { valueInput, handleLetterChange, handleSelect } = this.props;
         return (
             <div className="BoxInput">

@@ -12,41 +12,56 @@ class App extends Component {
       characterList: [],
       filteredList: [],
       value: '',
-      valueSelect:"",
+      valueSelect: "",
     }
     this.handleLetterChange = this.handleLetterChange.bind(this)
     this.filterResults = this.filterResults.bind(this)
     this.filterCharacters = this.filterCharacters.bind(this)
-    this.handleSelect=this.handleSelect.bind(this)
-    this.filterByLife=this.filterByLife.bind(this)
+    this.handleSelect = this.handleSelect.bind(this)
+    this.filterByLife = this.filterByLife.bind(this)
+    this.saveDataLocalStorage = this.saveDataLocalStorage.bind(this);
   }
 
   // Llamo a la api para recibir los datos
 
   componentDidMount() {
-    fetch('https://hp-api.herokuapp.com/api/characters')
-      .then(response => {
-        return response.json();
-      })
-
-      //Pongo un ID a los datos que me llegan en JSON 
-
-      .then((json) => {
-        const characterListWithId = [];
-        for (let i = 0; i < json.length; i++) {
-          characterListWithId[i] = {
-            ...json[i],
-            id: i
-          }
-        }
-
-        //Guardo el array con los id en el estado (modificando el vacío)
-
-        this.setState({
-          characterList: characterListWithId,
-          filteredList: characterListWithId,
+    const dataFromLS = JSON.parse(localStorage.getItem('harry-potter-list'));
+    if (dataFromLS) {
+      this.setState({
+        characterList: dataFromLS,
+        filteredList: dataFromLS,
+      });
+    } else {
+      fetch('https://hp-api.herokuapp.com/api/characters')
+        .then(response => {
+          return response.json();
         })
-      })
+
+        //Pongo un ID a los datos que me llegan en JSON 
+
+        .then((json) => {
+          const characterListWithId = [];
+          for (let i = 0; i < json.length; i++) {
+            characterListWithId[i] = {
+              ...json[i],
+              id: i
+            }
+          }
+
+          //Guardo el array con los id en el estado (modificando el vacío)
+
+          this.setState({
+            characterList: characterListWithId,
+            filteredList: characterListWithId,
+          }, this.saveDataLocalStorage(characterListWithId))
+        })
+    }
+  }
+
+  //Guardo datos de API en Local Storage
+
+  saveDataLocalStorage(list) {
+    localStorage.setItem('harry-potter-list', JSON.stringify(list));
   }
 
   // Selecciono el array que voy a enviar a CharacterList para que lo imprima
@@ -61,7 +76,7 @@ class App extends Component {
   //Pongo el valor del value en el estado de la madre. 
   //En el callback filtro el array completo de personajes para que me devuelva solo aquellos cuyo nombre incluya las letras que ha escrito el usuario, es decir, las del value.
 
-  handleSelect(event){
+  handleSelect(event) {
     this.setState(
       {
         valueSelect: event.currentTarget.value
@@ -79,17 +94,17 @@ class App extends Component {
   filterByLife() {
     console.log('AQUÏ', this.state.characterList);
     const arrayLife = this.state.characterList.filter((character) => {
-      if(character.alive === true && this.state.valueSelect === "Vivo"){
+      if (character.alive === true && this.state.valueSelect === "Vivo") {
         return true;
       } else if (character.alive === false && this.state.valueSelect === "Muerto") {
         return true;
-      } else if (this.state.valueSelect === "Todos"){ 
+      } else if (this.state.valueSelect === "Todos") {
         return true;
       } else {
         return false;
       }
     })
-    this.setState({filteredList: arrayLife})
+    this.setState({ filteredList: arrayLife })
   }
 
   filterCharacters() {
@@ -106,13 +121,13 @@ class App extends Component {
           exact path='/'
           render={() => {
             return this.state.characterList.length >= 25
-            ? <CharacterList
+              ? <CharacterList
                 characterListToPrint={this.filterResults}
                 handleLetterChange={this.handleLetterChange}
                 valueInput={this.state.value}
                 handleSelect={this.handleSelect}
               />
-            : <Loading/>
+              : <Loading />
           }}
         />
         <Route

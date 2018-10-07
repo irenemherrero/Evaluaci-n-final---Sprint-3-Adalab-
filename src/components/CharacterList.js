@@ -8,14 +8,12 @@ import PropTypes from 'prop-types';
 class CharacterList extends Component {
 
     render() {
-        console.log(this.props);
         const { handleLetterChange, valueInput, characterListToPrint, handleSelect } = this.props;
-        console.log('LISTA', characterListToPrint);
         return (
             <Fragment>
-                <div class="stars"></div>
-                <div class="twinkling"></div>
-                <div class="clouds"></div>
+                <div className="stars"></div>
+                <div className="twinkling"></div>
+                <div className="clouds"></div>
                 <div className="contentWeb">
                     <h1 className="WebTitle">Harry Potter Characters</h1>
                     <Filters
@@ -23,9 +21,9 @@ class CharacterList extends Component {
                         valueInput={valueInput}
                         handleSelect={handleSelect} />
                     <ul className="CharacterList">
-                        {characterListToPrint().map((character, index) => {
+                        {characterListToPrint().map((character) => {
                             return (
-                                <Link className="LinkCard" to={`/character/${character.id}`}><li key={index} className="CharacterCard">
+                                <Link className="LinkCard" to={`/character/${character.id}`}><li key={character.id} className="CharacterCard">
 
                                     <CharacterCard
                                         photo={character.image}
