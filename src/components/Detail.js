@@ -3,13 +3,39 @@ import ButtonBack from "./ButtonBack";
 import "../styles/Detail.css";
 import PropTypes from "prop-types";
 
+let characterToPrint;
+  
 class Detail extends Component {
-  render() {
-    console.log(this.props);
+  constructor(props){
+    super(props);
+    this.state = {
+      character: '',
+    }
+  }
+
+  componentWillMount() {
     const { characterList } = this.props;
     const { id } = this.props.match.params;
-    const characterToPrint = characterList[id];
+    characterToPrint = characterList[id];
     console.log(characterToPrint);
+    if (characterToPrint === undefined) {
+      console.log(this.state);
+      console.log('Traigo datos de LS');
+      // TENGO QUE SUSTITUIR 'HERMIONE GRANGER' POR EL NOMBRE DEL ESTADO CUANDO SE GUARDE.
+      const dataFromLS = JSON.parse(localStorage.getItem('Hermione Granger'));
+      characterToPrint = dataFromLS;
+    } else {
+      console.log('Traigo datos de props');
+      console.log(characterToPrint);
+      localStorage.setItem(`${characterToPrint.name}`, JSON.stringify(characterToPrint));
+      //NO SE GUARDA EN EL ESTADO EL NOMBRE!!!
+      this.setState({
+          character: characterToPrint.name,
+      }, console.log(this.state.character));
+    }
+  }
+
+  render() {
     const {
       image,
       name,
@@ -20,9 +46,9 @@ class Detail extends Component {
     } = characterToPrint;
     return (
       <Fragment>
-        <div class="stars"></div>
-        <div class="twinkling"></div>
-        <div class="clouds"></div>
+        <div className="stars"></div>
+        <div className="twinkling"></div>
+        <div className="clouds"></div>
         <div className="MaximumContainer">
           <div className="Container">
             <div className="ImageBox">

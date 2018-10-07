@@ -20,9 +20,10 @@ class App extends Component {
     this.handleSelect = this.handleSelect.bind(this)
     this.filterByLife = this.filterByLife.bind(this)
     this.saveDataLocalStorage = this.saveDataLocalStorage.bind(this);
+    this.callApi = this.callApi.bind(this);
   }
 
-  // Llamo a la api para recibir los datos
+//Compruebo si hay datos en LStorage. Si no, llamo a la API 
 
   componentDidMount() {
     const dataFromLS = JSON.parse(localStorage.getItem('harry-potter-list'));
@@ -32,6 +33,13 @@ class App extends Component {
         filteredList: dataFromLS,
       });
     } else {
+      this.callApi();
+    }
+  }
+
+   // Llamo a la api para recibir los datos
+   
+   callApi(){
       fetch('https://hp-api.herokuapp.com/api/characters')
         .then(response => {
           return response.json();
@@ -56,8 +64,7 @@ class App extends Component {
           }, this.saveDataLocalStorage(characterListWithId))
         })
     }
-  }
-
+  
   //Guardo datos de API en Local Storage
 
   saveDataLocalStorage(list) {
@@ -83,6 +90,7 @@ class App extends Component {
       }, this.filterByLife
     );
   }
+
   handleLetterChange(event) {
     this.setState(
       {
@@ -113,6 +121,8 @@ class App extends Component {
     console.log('che', arrayFiltered);
     this.setState({ filteredList: arrayFiltered })
   }
+
+  //Guardar en LocalStorage datos del personaje en el que se pincha
 
   render() {
     return (

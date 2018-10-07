@@ -5,7 +5,11 @@ import PropTypes from 'prop-types';
 class CharacterCard extends Component {
 
     render() {
-        const { house, name, photo } = this.props;
+        const { 
+            house, 
+            name, 
+            photo,
+        } = this.props;
         return (
             <Fragment>
                 <div className="PhotoContainer">

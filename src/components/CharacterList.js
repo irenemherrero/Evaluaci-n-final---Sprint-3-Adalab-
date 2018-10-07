@@ -6,9 +6,13 @@ import '../styles/CharacterList.css';
 import PropTypes from 'prop-types';
 
 class CharacterList extends Component {
-
     render() {
-        const { handleLetterChange, valueInput, characterListToPrint, handleSelect } = this.props;
+        const { 
+            handleLetterChange,
+            valueInput, 
+            characterListToPrint, 
+            handleSelect 
+        } = this.props;
         return (
             <Fragment>
                 <div className="stars"></div>
@@ -23,8 +27,7 @@ class CharacterList extends Component {
                     <ul className="CharacterList">
                         {characterListToPrint().map((character) => {
                             return (
-                                <Link className="LinkCard" to={`/character/${character.id}`}><li key={character.id} className="CharacterCard">
-
+                                <Link className="LinkCard" to={`/character/${character.id}`}><li key={character.id} className="CharacterCard" >
                                     <CharacterCard
                                         photo={character.image}
                                         name={character.name}
