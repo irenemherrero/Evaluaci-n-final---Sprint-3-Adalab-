@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import CharacterList from './CharacterList';
 import Detail from './Detail';
+import Loading from './Loading';
 import '../styles/App.css';
 
 class App extends Component {
@@ -31,9 +32,7 @@ class App extends Component {
       //Pongo un ID a los datos que me llegan en JSON 
 
       .then((json) => {
-        console.log(json)
         const characterListWithId = [];
-
         for (let i = 0; i < json.length; i++) {
           characterListWithId[i] = {
             ...json[i],
@@ -101,19 +100,20 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.state.value);
     return (
       <Switch>
         <Route
           exact path='/'
-          render={() =>
-            <CharacterList
-              characterListToPrint={this.filterResults}
-              handleLetterChange={this.handleLetterChange}
-              valueInput={this.state.value}
-              handleSelect={this.handleSelect}
-            />
-          }
+          render={() => {
+            return this.state.characterList.length >= 25
+            ? <CharacterList
+                characterListToPrint={this.filterResults}
+                handleLetterChange={this.handleLetterChange}
+                valueInput={this.state.value}
+                handleSelect={this.handleSelect}
+              />
+            : <Loading/>
+          }}
         />
         <Route
           path='/character/:id'
