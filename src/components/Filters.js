@@ -4,7 +4,11 @@ import PropTypes from "prop-types";
 
 class Filters extends Component {
     render() {
-        const { valueInput, handleLetterChange, handleSelect } = this.props;
+        const { 
+            valueInput, 
+            handleLetterChange, 
+            handleSelect 
+        } = this.props;
         return (
             <div className="BoxInput">
                 <input className="Input"
@@ -19,8 +23,8 @@ class Filters extends Component {
                 </select>
             </div>
         );
-    }
-}
+    };
+};
 
 Filters.propTypes = {
     valueInput: PropTypes.string,

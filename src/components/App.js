@@ -12,84 +12,67 @@ class App extends Component {
       characterList: [],
       filteredList: [],
       value: '',
-      valueSelect: "",
-    }
-    this.handleLetterChange = this.handleLetterChange.bind(this)
-    this.filterResults = this.filterResults.bind(this)
-    this.filterCharacters = this.filterCharacters.bind(this)
-    this.handleSelect = this.handleSelect.bind(this)
-    this.filterByLife = this.filterByLife.bind(this)
+      valueSelect: '',
+    };
+    this.handleLetterChange = this.handleLetterChange.bind(this);
+    this.filterResults = this.filterResults.bind(this);
+    this.filterCharacters = this.filterCharacters.bind(this);
+    this.handleSelect = this.handleSelect.bind(this);
+    this.filterByLife = this.filterByLife.bind(this);
     this.saveDataLocalStorage = this.saveDataLocalStorage.bind(this);
     this.callApi = this.callApi.bind(this);
-  }
+  };
 
 //Compruebo si hay datos en LStorage. Si no, llamo a la API 
 
   componentDidMount() {
     const dataFromLS = JSON.parse(localStorage.getItem('harry-potter-list'));
-    if (dataFromLS) {
-      this.setState({
-        characterList: dataFromLS,
-        filteredList: dataFromLS,
-      });
-    } else {
-      this.callApi();
-    }
-  }
+      if (dataFromLS) {
+        this.setState({
+          characterList: dataFromLS,
+          filteredList: dataFromLS,
+        });
+      } else {
+        this.callApi();
+      };
+  };
 
    // Llamo a la api para recibir los datos
    
-   callApi(){
-      fetch('https://hp-api.herokuapp.com/api/characters')
-        .then(response => {
-          return response.json();
-        })
+  callApi(){
+    fetch('https://hp-api.herokuapp.com/api/characters')
+      .then(response => {
+        return response.json();
+      })
 
         //Pongo un ID a los datos que me llegan en JSON 
 
-        .then((json) => {
-          const characterListWithId = [];
+      .then((json) => {
+        const characterListWithId = [];
           for (let i = 0; i < json.length; i++) {
-            characterListWithId[i] = {
-              ...json[i],
-              id: i
-            }
-          }
+          characterListWithId[i] = {
+            ...json[i],
+            id: i
+          };
+        };
 
           //Guardo el array con los id en el estado (modificando el vacío)
 
-          this.setState({
-            characterList: characterListWithId,
-            filteredList: characterListWithId,
-          }, this.saveDataLocalStorage(characterListWithId))
-        })
-    }
+        this.setState({
+          characterList: characterListWithId,
+          filteredList: characterListWithId,
+        }, this.saveDataLocalStorage(characterListWithId));
+      });
+  };
   
   //Guardo datos de API en Local Storage
 
   saveDataLocalStorage(list) {
     localStorage.setItem('harry-potter-list', JSON.stringify(list));
-  }
+  };
 
-  // Selecciono el array que voy a enviar a CharacterList para que lo imprima
-
-  filterResults() {
-    const { characterList, value, filteredList, valueSelect } = this.state;
-    return !value && !valueSelect
-      ? characterList
-      : filteredList
-  }
-
-  //Pongo el valor del value en el estado de la madre. 
+  //Pongo el valor del value del input en el estado de la madre. 
   //En el callback filtro el array completo de personajes para que me devuelva solo aquellos cuyo nombre incluya las letras que ha escrito el usuario, es decir, las del value.
-
-  handleSelect(event) {
-    this.setState(
-      {
-        valueSelect: event.currentTarget.value
-      }, this.filterByLife
-    );
-  }
 
   handleLetterChange(event) {
     this.setState(
@@ -97,10 +80,30 @@ class App extends Component {
         value: event.currentTarget.value
       }, this.filterCharacters
     );
-  }
+  };
+
+  //Pongo el valor del value del select en el estado de la madre. 
+  //En el callback filtro el array completo de personajes para que me devuelva solo los que están muertos.
+
+  handleSelect(event) {
+    this.setState(
+      {
+        valueSelect: event.currentTarget.value
+      }, this.filterByLife
+    );
+  };
+
+  //Funciones de filtrado (revisar para combinar)
+
+  filterCharacters() {
+    const arrayFiltered = this.state.characterList.filter((character) =>
+      character.name.toUpperCase().includes(this.state.value.toUpperCase()));
+      this.setState({ 
+        filteredList: arrayFiltered 
+      });
+  };
 
   filterByLife() {
-    console.log('AQUÏ', this.state.characterList);
     const arrayLife = this.state.characterList.filter((character) => {
       if (character.alive === true && this.state.valueSelect === "Vivo") {
         return true;
@@ -110,19 +113,26 @@ class App extends Component {
         return true;
       } else {
         return false;
-      }
-    })
-    this.setState({ filteredList: arrayLife })
-  }
+      };
+    });
+    this.setState({ 
+      filteredList: arrayLife 
+    });
+  };
 
-  filterCharacters() {
-    const arrayFiltered = this.state.characterList.filter((character) =>
-      character.name.toUpperCase().includes(this.state.value.toUpperCase()));
-    console.log('che', arrayFiltered);
-    this.setState({ filteredList: arrayFiltered })
-  }
+   // Selecciono el array que voy a enviar a CharacterList para que lo imprima
 
-  //Guardar en LocalStorage datos del personaje en el que se pincha
+   filterResults() {
+    const { 
+      characterList, 
+      value, 
+      filteredList, 
+      valueSelect 
+    } = this.state;
+    return !value && !valueSelect
+      ? characterList
+      : filteredList
+  };
 
   render() {
     return (
@@ -151,7 +161,7 @@ class App extends Component {
         />
       </Switch>
     );
-  }
-}
+  };
+};
 
 export default App;

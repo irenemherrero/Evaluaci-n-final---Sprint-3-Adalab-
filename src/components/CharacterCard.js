@@ -3,7 +3,6 @@ import '../styles/CharacterCard.css';
 import PropTypes from 'prop-types';
 
 class CharacterCard extends Component {
-
     render() {
         const { 
             house, 
@@ -13,7 +12,11 @@ class CharacterCard extends Component {
         return (
             <Fragment>
                 <div className="PhotoContainer">
-                    <img className="ImageCharacter" src={photo} alt={name} />
+                    <img 
+                        className="ImageCharacter" 
+                        src={photo} 
+                        alt={name} 
+                    />
                 </div>
                 <div className="DataCharacterBox">
                     <p className="magicParagraph">{name}</p>
@@ -21,8 +24,8 @@ class CharacterCard extends Component {
                 </div>
             </Fragment>
         );
-    }
-}
+    };
+};
 
 CharacterCard.propTypes = {
     house: PropTypes.string,

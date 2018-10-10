@@ -4,38 +4,34 @@ import "../styles/Detail.css";
 import PropTypes from "prop-types";
 
 let characterToPrint;
-  
+
 class Detail extends Component {
-  constructor(props){
-    super(props);
-    this.state = {
-      character: '',
-    }
-  }
 
   componentWillMount() {
     const { characterList } = this.props;
     const { id } = this.props.match.params;
     characterToPrint = characterList[id];
-    console.log(characterToPrint);
     if (characterToPrint === undefined) {
-      console.log(this.state);
-      console.log('Traigo datos de LS');
-      // TENGO QUE SUSTITUIR 'HERMIONE GRANGER' POR EL NOMBRE DEL ESTADO CUANDO SE GUARDE.
-      const dataFromLS = JSON.parse(localStorage.getItem('Hermione Granger'));
-      characterToPrint = dataFromLS;
+      console.log('Traigo datos de API');
+      fetch(`https://hp-api.herokuapp.com/api/characters`)
+      .then(response => {
+        return response.json();
+      })
+      .then((json) => {
+        console.log(json[2]);
+        const characterFromApi = json[2];
+        //NO ME ESTÁ GUARDANDO ESTO EN LET CHARACTERTOPRINT (ARRIBA);
+        characterToPrint = characterFromApi;
+        console.log(characterToPrint);
+      });
     } else {
-      console.log('Traigo datos de props');
       console.log(characterToPrint);
-      localStorage.setItem(`${characterToPrint.name}`, JSON.stringify(characterToPrint));
-      //NO SE GUARDA EN EL ESTADO EL NOMBRE!!!
-      this.setState({
-          character: characterToPrint.name,
-      }, console.log(this.state.character));
+      console.log('Traigo datos de props');
     }
   }
 
   render() {
+    console.log(characterToPrint);
     const {
       image,
       name,
@@ -44,6 +40,7 @@ class Detail extends Component {
       patronus,
       alive
     } = characterToPrint;
+
     return (
       <Fragment>
         <div className="stars"></div>
@@ -72,8 +69,8 @@ class Detail extends Component {
         </div>
       </Fragment>
     );
-  }
-}
+  };
+};
 
 Detail.propTypes = {
   characterList: PropTypes.array,

@@ -11,7 +11,7 @@ class ButtonBack extends Component {
         </button>
       </Link>
     );
-  }
-}
+  };
+};
 
 export default ButtonBack;
