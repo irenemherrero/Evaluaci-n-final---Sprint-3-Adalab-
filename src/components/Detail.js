@@ -3,35 +3,18 @@ import ButtonBack from "./ButtonBack";
 import "../styles/Detail.css";
 import PropTypes from "prop-types";
 
-let characterToPrint;
-
 class Detail extends Component {
-
-  componentWillMount() {
-    const { characterList } = this.props;
-    const { id } = this.props.match.params;
-    characterToPrint = characterList[id];
-    if (characterToPrint === undefined) {
-      console.log('Traigo datos de API');
-      fetch(`https://hp-api.herokuapp.com/api/characters`)
-      .then(response => {
-        return response.json();
-      })
-      .then((json) => {
-        console.log(json[2]);
-        const characterFromApi = json[2];
-        //NO ME ESTÁ GUARDANDO ESTO EN LET CHARACTERTOPRINT (ARRIBA);
-        characterToPrint = characterFromApi;
-        console.log(characterToPrint);
-      });
-    } else {
-      console.log(characterToPrint);
-      console.log('Traigo datos de props');
-    }
-  }
-
   render() {
-    console.log(characterToPrint);
+    const { id } = this.props.match.params;
+    const { characterList } = this.props;
+    let characterToPrint;
+    if (characterList.length !== 0) {
+        characterToPrint = characterList[id];
+        localStorage.setItem('characterToPrint', JSON.stringify(characterToPrint));
+    } else {
+        const characterSaved = JSON.parse(localStorage.getItem('characterToPrint'))
+        characterToPrint = characterSaved;
+    }
     const {
       image,
       name,
