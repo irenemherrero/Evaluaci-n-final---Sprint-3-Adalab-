@@ -48,9 +48,9 @@ class CharacterList extends Component {
                                 );
                             })};
                         </ul>
-                        : <NoCharacters 
-                            valueInput={valueInput}/>
-                    }
+                        : <NoCharacters
+                            valueInput={valueInput} />
+                    };
                 </div>
             </Fragment>
         );

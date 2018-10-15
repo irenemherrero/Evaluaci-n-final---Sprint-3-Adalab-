@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import NoCharacterFound from '../images/no_character_found.gif';
 class NoCharacters extends Component {
     render() { 

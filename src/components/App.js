@@ -28,40 +28,40 @@ class App extends Component {
     this.compareLists = this.compareLists.bind(this);
   };
 
-//Compruebo si hay datos en LStorage. Si no, llamo a la API 
+  //Compruebo si hay datos en LStorage. Si no, llamo a la API 
 
   componentDidMount() {
     const dataFromLS = JSON.parse(localStorage.getItem('harry-potter-list'));
-      if (dataFromLS) {
-        this.setState({
-          characterList: dataFromLS,
-          filteredList: dataFromLS,
-        });
-      } else {
-        this.callApi();
-      };
+    if (dataFromLS) {
+      this.setState({
+        characterList: dataFromLS,
+        filteredList: dataFromLS,
+      });
+    } else {
+      this.callApi();
+    };
   };
 
-   // Llamo a la api para recibir los datos
-   
-  callApi(){
+  // Llamo a la api para recibir los datos
+
+  callApi() {
     fetch('https://hp-api.herokuapp.com/api/characters')
       .then(response => {
         return response.json();
       })
 
-        //Pongo un ID a los datos que me llegan en JSON 
+      //Pongo un ID a los datos que me llegan en JSON 
 
       .then((json) => {
         const characterListWithId = [];
-          for (let i = 0; i < json.length; i++) {
+        for (let i = 0; i < json.length; i++) {
           characterListWithId[i] = {
             ...json[i],
             id: i
           };
         };
 
-          //Guardo el array con los id en el estado (modificando el vacío)
+        //Guardo el array con los id en el estado (modificando el vacío)
 
         this.setState({
           characterList: characterListWithId,
@@ -69,7 +69,7 @@ class App extends Component {
         }, this.saveDataLocalStorage(characterListWithId));
       });
   };
-  
+
   //Guardo datos de API en Local Storage
 
   saveDataLocalStorage(list) {
@@ -98,14 +98,14 @@ class App extends Component {
     );
   };
 
-  //Funciones de filtrado (revisar para combinar)
+  //Funciones de filtrado
 
   filterCharacters() {
     arrayCharacters = this.state.characterList.filter((character) =>
       character.name.toUpperCase().includes(this.state.valueName.toUpperCase()));
-      this.setState({ 
-        filteredListName: arrayCharacters,
-      }, this.compareLists(arrayCharacters)
+    this.setState({
+      filteredListName: arrayCharacters,
+    }, this.compareLists(arrayCharacters)
     );
   }
 
@@ -121,59 +121,50 @@ class App extends Component {
         return false;
       };
     });
-    this.setState({ 
+    this.setState({
       filteredListLife: arrayLife,
     }, this.compareLists());
   };
 
-  compareLists(){
+  compareLists() {
     const {
       valueName,
-      valueLife, 
-      doubleFilter,
+      valueLife,
     } = this.state;
-    if(valueName && valueLife){
-      console.log(arrayCharacters);
-      console.log(arrayLife);
-      console.log(doubleFilter);
+    if (valueName && valueLife) {
       const doubleFilter = [];
-      arrayCharacters.forEach((characterL1)=>
-        arrayLife.forEach((characterL2)=>
-          {if(characterL1 === characterL2){
+      arrayCharacters.forEach((characterL1) =>
+        arrayLife.forEach((characterL2) => {
+          if (characterL1 === characterL2) {
             doubleFilter.push(characterL1)
-          }}
+          }
+        }
         )
-      )
+      );
       this.setState({
         doubleFilter: doubleFilter,
-      })
-    }
-  }
+      });
+    };
+  };
 
-   // Selecciono el array que voy a enviar a CharacterList para que lo imprima
+  // Selecciono el array que voy a enviar a CharacterList para que lo imprima
 
-   filterResults() {
-    const { 
-      characterList, 
+  filterResults() {
+    const {
+      characterList,
       filteredListName,
       filteredListLife,
-      valueName,  
-      valueLife, 
+      valueName,
+      valueLife,
       doubleFilter
     } = this.state;
-
-    if(valueName && !valueLife){
-      console.log('filtro por nombre');
+    if (valueName && !valueLife) {
       return filteredListName
-    } else if (!valueName && valueLife){
-      console.log(filteredListLife);
-      console.log('filtro por vida');
+    } else if (!valueName && valueLife) {
       return filteredListLife
     } else if (valueName && valueLife) {
-      console.log('filtro por nombre y vida');
       return doubleFilter
-    } else if (!valueName && !valueLife){
-      console.log('Sin filtro');
+    } else if (!valueName && !valueLife) {
       return characterList
     }
   };
