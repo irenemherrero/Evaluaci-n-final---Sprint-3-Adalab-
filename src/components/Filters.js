@@ -12,11 +12,12 @@ class Filters extends Component {
             <div className="BoxInput">
                 <input className="Input"
                     value={valueInput}
-                    placeholder="Ej. Harry Potter"
+                    placeholder="Filtra personajes por nombre..."
                     onChange={handleLetterChange}
                 />
-                <select name="" id="" onChange={handleSelect}>
-                    <option value="Todos" defaultChecked>Todos</option>
+                <select className="selectLife" name="" id="" onChange={handleSelect}>
+                    <option value="Todos" defaultChecked>Selecciona un estado</option>
+                    <option value="Todos">Todos</option>
                     <option value="Vivo">Vivo</option>
                     <option value="Muerto">Muerto</option>
                 </select>
