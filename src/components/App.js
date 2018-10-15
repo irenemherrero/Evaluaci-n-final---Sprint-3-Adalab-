@@ -4,14 +4,19 @@ import CharacterList from './CharacterList';
 import Detail from './Detail';
 import Loading from './Loading';
 
+let arrayCharacters = [];
+let arrayLife = [];
+
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       characterList: [],
-      filteredList: [],
-      value: '',
-      valueSelect: '',
+      filteredListName: [],
+      filteredListLife: [],
+      valueName: '',
+      valueLife: '',
+      doubleFilter: [],
     };
     this.handleLetterChange = this.handleLetterChange.bind(this);
     this.filterResults = this.filterResults.bind(this);
@@ -20,6 +25,7 @@ class App extends Component {
     this.filterByLife = this.filterByLife.bind(this);
     this.saveDataLocalStorage = this.saveDataLocalStorage.bind(this);
     this.callApi = this.callApi.bind(this);
+    this.compareLists = this.compareLists.bind(this);
   };
 
 //Compruebo si hay datos en LStorage. Si no, llamo a la API 
@@ -76,7 +82,7 @@ class App extends Component {
   handleLetterChange(event) {
     this.setState(
       {
-        value: event.currentTarget.value
+        valueName: event.currentTarget.value
       }, this.filterCharacters
     );
   };
@@ -87,7 +93,7 @@ class App extends Component {
   handleSelect(event) {
     this.setState(
       {
-        valueSelect: event.currentTarget.value
+        valueLife: event.currentTarget.value
       }, this.filterByLife
     );
   };
@@ -95,42 +101,81 @@ class App extends Component {
   //Funciones de filtrado (revisar para combinar)
 
   filterCharacters() {
-    const arrayFiltered = this.state.characterList.filter((character) =>
-      character.name.toUpperCase().includes(this.state.value.toUpperCase()));
+    arrayCharacters = this.state.characterList.filter((character) =>
+      character.name.toUpperCase().includes(this.state.valueName.toUpperCase()));
       this.setState({ 
-        filteredList: arrayFiltered 
-      });
-  };
+        filteredListName: arrayCharacters,
+      }, this.compareLists(arrayCharacters)
+    );
+  }
 
   filterByLife() {
-    const arrayLife = this.state.characterList.filter((character) => {
-      if (character.alive === true && this.state.valueSelect === "Vivo") {
+    arrayLife = this.state.characterList.filter((character) => {
+      if (character.alive === true && this.state.valueLife === "Vivo") {
         return true;
-      } else if (character.alive === false && this.state.valueSelect === "Muerto") {
+      } else if (character.alive === false && this.state.valueLife === "Muerto") {
         return true;
-      } else if (this.state.valueSelect === "Todos") {
+      } else if (this.state.valueLife === "Todos") {
         return true;
       } else {
         return false;
       };
     });
     this.setState({ 
-      filteredList: arrayLife 
-    });
+      filteredListLife: arrayLife,
+    }, this.compareLists());
   };
+
+  compareLists(){
+    const {
+      valueName,
+      valueLife, 
+      doubleFilter,
+    } = this.state;
+    if(valueName && valueLife){
+      console.log(arrayCharacters);
+      console.log(arrayLife);
+      console.log(doubleFilter);
+      const doubleFilter = [];
+      arrayCharacters.forEach((characterL1)=>
+        arrayLife.forEach((characterL2)=>
+          {if(characterL1 === characterL2){
+            doubleFilter.push(characterL1)
+          }}
+        )
+      )
+      this.setState({
+        doubleFilter: doubleFilter,
+      })
+    }
+  }
 
    // Selecciono el array que voy a enviar a CharacterList para que lo imprima
 
    filterResults() {
     const { 
       characterList, 
-      value, 
-      filteredList, 
-      valueSelect 
+      filteredListName,
+      filteredListLife,
+      valueName,  
+      valueLife, 
+      doubleFilter
     } = this.state;
-    return !value && !valueSelect
-      ? characterList
-      : filteredList
+
+    if(valueName && !valueLife){
+      console.log('filtro por nombre');
+      return filteredListName
+    } else if (!valueName && valueLife){
+      console.log(filteredListLife);
+      console.log('filtro por vida');
+      return filteredListLife
+    } else if (valueName && valueLife) {
+      console.log('filtro por nombre y vida');
+      return doubleFilter
+    } else if (!valueName && !valueLife){
+      console.log('Sin filtro');
+      return characterList
+    }
   };
 
   render() {
@@ -143,7 +188,7 @@ class App extends Component {
               ? <CharacterList
                 characterListToPrint={this.filterResults}
                 handleLetterChange={this.handleLetterChange}
-                valueInput={this.state.value}
+                valueInput={this.state.valueName}
                 handleSelect={this.handleSelect}
               />
               : <Loading />
