@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import "../styles/ButtonBack.css";
 import { Link } from "react-router-dom";
 
 class ButtonBack extends Component {

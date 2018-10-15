@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react';
-import '../styles/CharacterCard.css';
 import PropTypes from 'prop-types';
 
 class CharacterCard extends Component {

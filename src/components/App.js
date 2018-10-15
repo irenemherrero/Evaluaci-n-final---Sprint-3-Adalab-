@@ -3,7 +3,6 @@ import { Switch, Route } from 'react-router-dom';
 import CharacterList from './CharacterList';
 import Detail from './Detail';
 import Loading from './Loading';
-import '../styles/App.css';
 
 class App extends Component {
   constructor(props) {

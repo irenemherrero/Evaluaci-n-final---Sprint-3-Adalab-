@@ -1,17 +1,17 @@
 import React, { Component, Fragment } from 'react';
 import CharacterCard from './CharacterCard';
 import Filters from './Filters';
+import NoCharacters from './NoCharacters';
 import { Link } from 'react-router-dom';
-import '../styles/CharacterList.css';
 import PropTypes from 'prop-types';
 
 class CharacterList extends Component {
     render() {
-        const { 
+        const {
             handleLetterChange,
-            valueInput, 
-            characterListToPrint, 
-            handleSelect 
+            valueInput,
+            characterListToPrint,
+            handleSelect
         } = this.props;
 
         return (
@@ -24,29 +24,33 @@ class CharacterList extends Component {
                     <Filters
                         handleLetterChange={handleLetterChange}
                         valueInput={valueInput}
-                        handleSelect={handleSelect} 
+                        handleSelect={handleSelect}
                     />
-                    <ul className="CharacterList">
-                        {characterListToPrint().map((character) => {
-                            return (
-                                <Link 
-                                    className="LinkCard" 
-                                    to={`/character/${character.id}`}
-                                >
-                                    <li 
-                                        key={character.id} 
-                                        className="CharacterCard" 
+                    {characterListToPrint().length > 0
+                        ? <ul className="CharacterList">
+                            {characterListToPrint().map((character) => {
+                                return (
+                                    <Link
+                                        className="LinkCard"
+                                        to={`/character/${character.id}`}
                                     >
-                                        <CharacterCard
-                                            photo={character.image}
-                                            name={character.name}
-                                            house={character.house || "Sin casa"}
-                                        />
-                                    </li>
-                                </Link>
-                            );
-                        })};
-                    </ul>
+                                        <li
+                                            key={character.id}
+                                            className="CharacterCard"
+                                        >
+                                            <CharacterCard
+                                                photo={character.image}
+                                                name={character.name}
+                                                house={character.house || "Sin casa"}
+                                            />
+                                        </li>
+                                    </Link>
+                                );
+                            })};
+                        </ul>
+                        : <NoCharacters 
+                            valueInput={valueInput}/>
+                    }
                 </div>
             </Fragment>
         );

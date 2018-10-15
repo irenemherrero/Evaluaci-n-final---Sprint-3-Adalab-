@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import "../styles/Filters.css";
 import PropTypes from "prop-types";
 
 class Filters extends Component {

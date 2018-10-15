@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from "react";
 import ButtonBack from "./ButtonBack";
-import "../styles/Detail.css";
 import PropTypes from "prop-types";
 
 class Detail extends Component {
